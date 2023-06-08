@@ -1,0 +1,151 @@
+= Softwareentwicklung II - Prüfung zum Scheinerwerb Sommersemester 2023
+Prof. Dr. Ullrich Hafner <ullrich.hafner@hm.edu>
+
+:xrefstyle: short
+:!sectnums:
+
+ifndef::imagesdir[:imagesdir: images/]
+ifndef::plantUMLDir[:plantUMLDir: .plantuml/]
+:figure-caption: Abbildung
+
+== Internationale Postleitzahlen
+
+Die Hochschule möchte auch Studierende immatrikulieren, deren Wohnsitz außerhalb Deutschlands liegt. Dazu müssen internationale Adressen erfasst werden können. Postleitzahlen sind in diesem Fall besonders zu behandeln, da jedes Land eigene Regeln für Postleitzahlen festlegt.
+
+Zur Abbildung von Postleitzahlen hat sich die Hochschule folgende Struktur der Klassen und Interfaces vorgestellt. Zunächst soll ein Prototyp mit Deutschen und Schweizer Postleitzahlen erstellt werden. Später sollen weitere Länder hinzukommen.
+
+Die folgende Abbildung zeigt die geplante Struktur der Klassen und Interfaces. Grüne Klassen sind vorgegeben, gelbe sind von Ihnen zu erstellen.
+
+[plantuml]
+----
+@startuml
+
+skinparam class {
+  BackgroundColor #4AD386
+  BorderColor #a0a0a0
+  BackgroundColor<<Main>> gold
+  BorderColor black
+  ArrowColor black
+  FontName  Arial Unicode MS
+  FontSize 20
+}
+
+skinparam classFontSize 24
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 20
+
+skinparam ArrowColor black
+skinparam ArrowThickness 2
+
+hide circle
+
+interface PostalCode <<interface>> {
+    getCountry(): Country
+    getCountryIsoCode(): String
+    getCode(): int
+    getShortForm(): : String
+    getLongForm(): String
+}
+
+hide PostalCode fields
+
+enum Country {
+    GERMANY("DE", "Germany"),
+    SWITZERLAND("CH", "Switzerland");
+}
+
+hide Country fields
+
+class AbstractPostalCode <<abstract>> #yellow  {
+    ...
+--
+    ...
+}
+class GermanyPostalCode #yellow {
+    GermanyPostalCode(code: int)
+}
+class SwitzerlandPostalCode #yellow {
+    SwitzerlandPostalCode(code: int)
+}
+
+PostalCode <|.. AbstractPostalCode
+AbstractPostalCode <|.. GermanyPostalCode
+AbstractPostalCode <|.. SwitzerlandPostalCode
+
+class PostalCodeFactory #yellow {
+    createPostalCodeFrom(String: longForm): PostalCode
+}
+
+PostalCodeFactory .> PostalCode : <<create>>
+
+@enduml
+----
+
+Für alle Postleitzahlen gelten die folgenden gemeinsamen Anforderungen:
+
+* Eine Postleitzahl implementiert das Interface `PostalCode`.
+* Eine konkrete deutsche oder schweizer Postleitzahl Instanz wird über einen Konstruktor in der jeweiligen konkreten Klasse erzeugt, der als Parameter die eigentliche Postleitzahl als Integerwert hat.
+* Es dürfen nur gültige Postleitzahlen erzeugt werden. Werden im Konstruktor ungültige Werte übergeben, soll eine `IllegalArgumentException` geworfen werden. Denken Sie beim Werfen der Exception daran, im Meldungstext u.a. die falsch übergebene Postleitzahl auszugeben.
+* Eine Postleitzahl kann in Kurzform (`getShortForm()`) ohne Länderkennzeichen oder als Langform (`getLongForm()`) mit Länderkennzeichen ausgegeben werden.
+* Die Methode `toString` soll die Langform der Postleitzahl ausgeben.
+* Eine Postleitzahl muss `equals` und `hashCode` implementieren.
+* Duplizieren soweit möglich keine Funktionalität in den konkreten Postleitzahl-Klassen, sondern schreiben Sie diese in die Oberklasse.
+
+*Tipp*: Sie können die folgenden Aufgaben auf zwei verschiedene Wege lösen:
+
+1. Gehen Sie die Aufgaben einzeln nacheinander durch und ignorieren Sie zunächst die Vererbung. Lagern Sie erst am Ende gemeinsame Teile in Basisklassen aus. Dadurch werfen Sie hinterher zwar wieder Code weg, aber evtl. fällt es Ihnen leichter, so alle Anforderungen umzusetzen.
+2. Sie berücksichtigen gleich zu Beginn die Vererbung und ersparen sich gleich zu Beginn das Duplizieren von Code. Dadurch schreiben Sie gar nicht erst doppelten Code und sparen sich Zeit. Der Nachteil ist, dass Sie die abstrakte Struktur direkt umsetzen müssen, was evtl. komplizierter ist.
+
+*Wichtig*: Wenn Sie neue Klassen anlegen, denken Sie daran, diese auch auf GitHub zu pushen!
+
+=== Aufgabe 1a - Anforderungen an Postleitzahlen für Deutschland
+
+Deutsche Postleitzahlen haben folgende zusätzliche Anforderungen:
+
+* Deutsche Postleitzahlen liegen zwischen 01000 und 99999 (einschließlich).
+* Deutsche Postleitzahlen werden in der Kurzform immer fünfstellig ausgegeben, d.h. bei Postleitzahlen kleiner 10000 wird eine führende 0 ergänzt.
+* Der Ländercode ist "DE", die passende Country Element `Country.GERMANY`.
+
+Schreiben Sie eine Klasse `GermanyPostalCode`, die alle hier und oben genannten Anforderungen umsetzt. Passende Tests sind bereits in der Klasse `GermanyPostalCodeTest` vorhanden.
+
+=== Aufgabe 1b - Anforderungen an Postleitzahlen für die Schweiz
+
+Schweizer Postleitzahlen haben folgende zusätzliche Anforderungen:
+
+* Schweizer Postleitzahlen sind gültig, wenn sie im Bereich 1000-9999 liegen (einschließlich).
+* Sie werden in der Kurzform vierstellig ausgegeben (also z.B. "2345").
+* Der Ländercode ist "CH", die passende Country Element `Country.SWITZERLAND`.
+
+Schreiben Sie eine Klasse `SwitzerlandPostalCode`, die alle hier und oben genannten Anforderungen umsetzt. Passende Tests sind bereits in der Klasse `SwitzerlandPostalCodeTest` vorhanden.
+
+=== Aufgabe 1c - Vereinfachen der Klassen mit Vererbung
+
+Nutzen Sie Vererbung, um die Klassen `GermanyPostalCode` und `SwitzerlandPostalCode` möglichst zu vereinfachen. Ziel sollte eine redundanzfreie Umsetzung der obigen Anforderungen sein.
+
+=== Aufgabe 1d - Erzeugen beliebiger Postleitzahlen aus einem String
+
+Um die Verwendung der Postleitzahlen im Code zu vereinfachen, soll eine Methode geschrieben werden, die zu einem gegebenen String eine passende `PostalCode` Instanz erzeugt (diese Methode nennt man auch __Simple Factory Method__). Schreiben Sie eine Methode `createPostalCodeFrom` in der Klasse `PostalCodeFactory`, die diese Anforderung korrekt umsetzt, d.h.:
+
+* Der String "DE-80335" liefert eine Instanz der Klasse `GermanPostalCode` mit der Postleitzahl 80335 zurück.
+* Der String "DE-08001" liefert eine Instanz der Klasse `GermanPostalCode` mit der Postleitzahl 8001 zurück.
+* Der String "CH-8001" liefert eine Instanz der Klasse `SwitzerlandPostalCode` mit der Postleitzahl 8001 zurück.
+* usw.
+
+Ungültige Postleitzahlen oder nicht unterstützte Ländercodes sollen mit einer `IllegalArgumentException` quittiert werden. Beispielsweise sind ungültig:
+
+- "DE-8001"
+- "DE-00001"
+- "08001-DE"
+- "80335"
+- "DE-DE-80335"
+- "DE-80335.999"
+- "AU-80335"
+- usw.
+
+Denken Sie beim Werfen der Exception daran, im Meldungstext u.a. die falsch übergebene Postleitzahl ausgegeben wird.
+
+Testen Sie Ihre Implementierung ausführlich in der bereits angelegten Klasse `PostalCodeFactoryTest`. Diese Klasse ist noch leer, d.h. Sie müssen selbst alle Tests beisteuern.
+
+
+
+
