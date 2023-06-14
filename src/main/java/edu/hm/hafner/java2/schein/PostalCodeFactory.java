@@ -6,5 +6,4 @@ package edu.hm.hafner.java2.schein;
  * @author Ullrich Hafner
  */
 public class PostalCodeFactory {
-    // FIXME: hier fehlt noch die Implementierung
 }
