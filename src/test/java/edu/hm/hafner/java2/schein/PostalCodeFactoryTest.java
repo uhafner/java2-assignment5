@@ -14,5 +14,4 @@ import static org.assertj.core.api.Assertions.*;
  */
 @DisplayName("Aufgabe 1d - PostalCodeFactory")
 class PostalCodeFactoryTest {
-    // FIXME: hier fehlen noch die Tests
 }
