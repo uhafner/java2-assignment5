@@ -20,7 +20,7 @@ ifdef::env-github,env-browser[:relfilesuffix: .adoc]
 
 == Aktuelle Aufgabenstellung
 
-Die Aufgabenstellung bekommen Sie als Ausdruck zur Verfügung gestellt.
+Die aktuelle Aufgabenstellung befindet sich in link:src/main/asciidoc/assignment.adoc[einer eigenen Datei] innerhalb dieses Projekts. Das Format für die Aufgabenstellung ist https://docs.asciidoctor.org/asciidoc/latest/[AsciiDoc] (ebenso wie diese README Datei).
 
 === Öffnen der Projekte
 
