@@ -124,7 +124,7 @@ Nutzen Sie Vererbung, um die Klassen `GermanyPostalCode` und `SwitzerlandPostalC
 
 === Aufgabe 1d - Erzeugen beliebiger Postleitzahlen aus einem String
 
-Um die Verwendung der Postleitzahlen im Code zu vereinfachen, soll eine Methode geschrieben werden, die zu einem gegebenen String eine passende `PostalCode` Instanz erzeugt (diese Methode nennt man auch __Simple Factory Method__). Schreiben Sie eine Methode `createPostalCodeFrom` in der Klasse `PostalCodeFactory`, die diese Anforderung korrekt umsetzt, d.h.:
+Um die Verwendung der Postleitzahlen im Code zu vereinfachen, soll eine Methode geschrieben werden, die zu einem gegebenen String eine passende `PostalCode` Instanz erzeugt (diese Methode nennt man auch __Simple Factory Method__). Schreiben Sie eine Methode `createPostalCodeFrom` in der Klasse `DefaultPostalCodeFactory`, die diese Anforderung korrekt umsetzt, d.h.:
 
 * Der String "DE-80335" liefert eine Instanz der Klasse `GermanPostalCode` mit der Postleitzahl 80335 zurück.
 * Der String "DE-08001" liefert eine Instanz der Klasse `GermanPostalCode` mit der Postleitzahl 8001 zurück.
