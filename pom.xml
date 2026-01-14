@@ -11,7 +11,7 @@
     <version>3.25.0</version>
   </parent>
 
-  <artifactId>java2-schein</artifactId>
+  <artifactId>java2-assignment5</artifactId>
   <version>2023-S-SNAPSHOT</version>
 
   <packaging>jar</packaging>
@@ -43,7 +43,7 @@
     <source.encoding>UTF-8</source.encoding>
     <project.build.sourceEncoding>${source.encoding}</project.build.sourceEncoding>
 
-    <module.name>${project.groupId}.java2.assignment2</module.name>
+    <module.name>${project.groupId}.java2.assignment5</module.name>
 
     <!-- Maven Plug-ins Configuration -->
     <buildhelper.maven.plugin>3.3.0</buildhelper.maven.plugin>
